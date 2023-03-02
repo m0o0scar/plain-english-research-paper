@@ -1,11 +1,11 @@
 {
-  "name": "chrome-extension-boilerplate-react-vite",
+  "name": "plain-english-research-paper",
   "version": "0.0.1",
-  "description": "chrome extension boilerplate",
+  "description": "Rewrite research paper into plain English with the power of AI",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite.git"
+    "url": "https://github.com/m0o0scar/plain-english-research-paper.git"
   },
   "scripts": {
     "build": "tsc --noEmit && vite build",
