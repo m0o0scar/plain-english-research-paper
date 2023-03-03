@@ -4,7 +4,6 @@
   "version": "0.0.1",
   "description": "Rewrite research paper into plain English with the power of AI",
   "action": {
-    "default_popup": "src/pages/popup/index.html",
     "default_icon": "icon-34.png"
   },
   "icons": {
@@ -14,6 +13,10 @@
     "storage",
     "unlimitedStorage"
   ],
+  "options_page": "src/pages/options/index.html",
+  "background": {
+    "service_worker": "src/pages/background/index.js"
+  },
   "content_scripts": [
     {
       "matches": [

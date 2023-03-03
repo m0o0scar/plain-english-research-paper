@@ -1,8 +1,19 @@
 import { chatCompletion } from './openai/chat';
 
-function insertBefore(el: HTMLElement, content: string, classes = '') {
+const clsForOriginal = [
+  'animate-pulse',
+  'bg-slate-200',
+  'rounded-lg',
+  'px-3',
+  'py-1',
+];
+const clsForRewritten = ['bg-green-200', 'rounded-lg', 'px-3', 'py-1'];
+
+function insertBefore(el: HTMLElement, content: string) {
   const newEl = document.createElement(el.tagName);
-  newEl.className = el.className + ' ' + classes;
+  newEl.className = el.className;
+  newEl.classList.remove(...clsForOriginal);
+  newEl.classList.add(...clsForRewritten);
   newEl.innerText = content;
   el.parentElement.insertBefore(newEl, el);
 }
@@ -17,26 +28,37 @@ async function main() {
   }
 
   if (titleEl && abstractEl) {
+    // give user some feedback
+    titleEl.classList.add(...clsForOriginal);
+    abstractEl.classList.add(...clsForOriginal);
+
     let rewrittenVersion: { newTitle: string; newAbstract: string };
 
     // is there any stored result in storage?
-    const key = `cache-${location.href}`;
-    const cachedValue = await chrome.storage.local.get([key]);
-    if (cachedValue[key]) {
-      rewrittenVersion = cachedValue[key];
-    } else {
-      // if not, get the original title & abstract, then ask ChatGPT to simplify them
-      const title = titleEl.innerText.trim().replace(/\n/g, '');
-      const abstract = abstractEl.innerText.trim().replace(/\n/g, '');
-      rewrittenVersion = await chatCompletion(title, abstract);
+    try {
+      const key = `cache-${location.href}`;
+      const cachedValue = await chrome.storage.local.get([key]);
+      if (cachedValue[key]) {
+        rewrittenVersion = cachedValue[key];
+      } else {
+        // if not, get the original title & abstract, then ask ChatGPT to simplify them
+        const title = titleEl.innerText.trim().replace(/\n/g, '');
+        const abstract = abstractEl.innerText.trim().replace(/\n/g, '');
+        rewrittenVersion = await chatCompletion(title, abstract);
 
-      // save result
-      await chrome.storage.local.set({ [key]: rewrittenVersion });
+        // save result
+        await chrome.storage.local.set({ [key]: rewrittenVersion });
+      }
+
+      if (rewrittenVersion) {
+        // show simplified version on the page
+        insertBefore(titleEl, rewrittenVersion.newTitle);
+        insertBefore(abstractEl, rewrittenVersion.newAbstract);
+      }
+    } finally {
+      titleEl.classList.remove(...clsForOriginal);
+      abstractEl.classList.remove(...clsForOriginal);
     }
-
-    // show simplified version on the page
-    insertBefore(titleEl, rewrittenVersion.newTitle, 'plain-english');
-    insertBefore(abstractEl, rewrittenVersion.newAbstract, 'plain-english');
   }
 }
 

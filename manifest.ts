@@ -9,13 +9,14 @@ const manifest: chrome.runtime.ManifestV3 = {
   version: packageJson.version,
   description: packageJson.description,
   action: {
-    default_popup: 'src/pages/popup/index.html',
     default_icon: 'icon-34.png',
   },
   icons: {
     '128': 'icon-128.png',
   },
   permissions: ['storage', 'unlimitedStorage'],
+  options_page: 'src/pages/options/index.html',
+  background: { service_worker: 'src/pages/background/index.js' },
   content_scripts: [
     {
       matches: ['https://paperswithcode.com/paper/*'],

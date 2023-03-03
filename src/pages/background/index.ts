@@ -1,5 +1,9 @@
-import reloadOnUpdate from "virtual:reload-on-update-in-background-script";
+import reloadOnUpdate from 'virtual:reload-on-update-in-background-script';
 
-reloadOnUpdate("pages/background");
+reloadOnUpdate('pages/background');
 
-console.log("background loaded");
+console.log('background loaded');
+
+chrome.action.onClicked.addListener(() => {
+  chrome.tabs.create({ url: 'src/pages/options/index.html' });
+});

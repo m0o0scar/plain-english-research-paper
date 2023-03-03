@@ -1,8 +1,14 @@
+const KEY = 'apikey';
+
 export async function chatCompletion(title: string, abstract: string) {
+  const cached = await chrome.storage.local.get([KEY]);
+  const key = cached[KEY];
+  if (!key) throw new Error('Please set key in options page');
+
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer -`,
+      Authorization: `Bearer ${key}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -15,7 +21,7 @@ export async function chatCompletion(title: string, abstract: string) {
             'Your task is help users to rewrite research paper title and abstract into simple plain English.',
             'You should use common objects and scenarios in life as metaphors, so that users can better understand the complex concepts.',
             'When rewriting the abstract, you should organize the content into bullet points.',
-            // 'Make sure you prefix "Title:" to the rewritten title, and "Abstract:" to the rewritten abstract.',
+            'Make sure you prefix "Title:" to the rewritten title, and "Abstract:" to the rewritten abstract.',
           ].join(' '),
         },
         {
