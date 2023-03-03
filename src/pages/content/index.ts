@@ -2,12 +2,12 @@ import { chatCompletion } from './openai/chat';
 
 const clsForOriginal = [
   'animate-pulse',
-  'bg-slate-200',
-  'rounded-lg',
+  '!bg-slate-200',
+  '!rounded-lg',
   'px-3',
   'py-1',
 ];
-const clsForRewritten = ['bg-green-200', 'rounded-lg', 'px-3', 'py-1'];
+const clsForRewritten = ['!bg-green-200', '!rounded-lg', 'px-3', 'py-1'];
 
 function insertBefore(el: HTMLElement, content: string) {
   const newEl = document.createElement(el.tagName);
@@ -25,6 +25,9 @@ async function main() {
   if (location.href.startsWith('https://paperswithcode.com/paper/')) {
     titleEl = document.querySelector('.paper-title h1');
     abstractEl = document.querySelector('.paper-abstract p');
+  } else if (location.href.startsWith('https://arxiv.org/abs/')) {
+    titleEl = document.querySelector('#abs h1.title');
+    abstractEl = document.querySelector('#abs blockquote.abstract');
   }
 
   if (titleEl && abstractEl) {

@@ -20,7 +20,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://paperswithcode.com/paper/*"
+        "https://paperswithcode.com/paper/*",
+        "https://arxiv.org/abs/*"
       ],
       "js": [
         "src/pages/content/index.js"

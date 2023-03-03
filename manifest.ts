@@ -19,7 +19,10 @@ const manifest: chrome.runtime.ManifestV3 = {
   background: { service_worker: 'src/pages/background/index.js' },
   content_scripts: [
     {
-      matches: ['https://paperswithcode.com/paper/*'],
+      matches: [
+        'https://paperswithcode.com/paper/*',
+        'https://arxiv.org/abs/*',
+      ],
       js: ['src/pages/content/index.js'],
       css: ['assets/css/contentStyle.chunk.css'],
     },
