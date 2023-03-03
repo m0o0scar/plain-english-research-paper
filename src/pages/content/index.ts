@@ -17,12 +17,26 @@ async function main() {
   }
 
   if (titleEl && abstractEl) {
-    const title = titleEl.innerText.trim().replace(/\n/g, '');
-    const abstract = abstractEl.innerText.trim().replace(/\n/g, '');
-    const { newTitle, newAbstract } = await chatCompletion(title, abstract);
+    let rewrittenVersion: { newTitle: string; newAbstract: string };
 
-    insertBefore(titleEl, newTitle, 'plain-english');
-    insertBefore(abstractEl, newAbstract, 'plain-english');
+    // is there any stored result in storage?
+    const key = `cache-${location.href}`;
+    const cachedValue = await chrome.storage.local.get([key]);
+    if (cachedValue[key]) {
+      rewrittenVersion = cachedValue[key];
+    } else {
+      // if not, get the original title & abstract, then ask ChatGPT to simplify them
+      const title = titleEl.innerText.trim().replace(/\n/g, '');
+      const abstract = abstractEl.innerText.trim().replace(/\n/g, '');
+      rewrittenVersion = await chatCompletion(title, abstract);
+
+      // save result
+      await chrome.storage.local.set({ [key]: rewrittenVersion });
+    }
+
+    // show simplified version on the page
+    insertBefore(titleEl, rewrittenVersion.newTitle, 'plain-english');
+    insertBefore(abstractEl, rewrittenVersion.newAbstract, 'plain-english');
   }
 }
 

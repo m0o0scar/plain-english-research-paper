@@ -8,7 +8,6 @@ const manifest: chrome.runtime.ManifestV3 = {
   name: packageJson.name,
   version: packageJson.version,
   description: packageJson.description,
-  options_page: 'src/pages/options/index.html',
   action: {
     default_popup: 'src/pages/popup/index.html',
     default_icon: 'icon-34.png',
@@ -16,6 +15,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   icons: {
     '128': 'icon-128.png',
   },
+  permissions: ['storage', 'unlimitedStorage'],
   content_scripts: [
     {
       matches: ['https://paperswithcode.com/paper/*'],

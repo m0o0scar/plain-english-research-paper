@@ -11,9 +11,11 @@ export async function chatCompletion(title: string, abstract: string) {
         {
           role: 'system',
           content: [
-            'Your user is a common people with no computer science nor machine learning knowledge.',
-            'You are a helpful assistant that help your user to rewrite research paper title and abstract into simple plain English',
-            'so that your user can understand the paper easier.',
+            'You are a helpful assistant serving people with no computer science nor machine learning knowledge.',
+            'Your task is help users to rewrite research paper title and abstract into simple plain English.',
+            'You should use common objects and scenarios in life as metaphors, so that users can better understand the complex concepts.',
+            'When rewriting the abstract, you should organize the content into bullet points.',
+            // 'Make sure you prefix "Title:" to the rewritten title, and "Abstract:" to the rewritten abstract.',
           ].join(' '),
         },
         {
@@ -30,11 +32,14 @@ export async function chatCompletion(title: string, abstract: string) {
     ] = [],
   } = await response.json();
 
+  console.log(`Response: ${content}`);
+  console.log(`Reason: ${reason}`);
+
   // eslint-disable-next-line prefer-const
-  let [newTitle, newAbstract] = content
-    .split('Abstract: ')
-    .map((str) => str.trim().replace(/\n/g, ''));
-  newTitle = newTitle.replace(/^Title: /, '');
+  const [newTitle, newAbstract] = (content as string)
+    .replace(/^Title: /, '')
+    .split('Abstract:')
+    .map((str) => str.trim());
 
   return {
     newTitle,

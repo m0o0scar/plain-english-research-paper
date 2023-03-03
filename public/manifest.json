@@ -3,7 +3,6 @@
   "name": "plain-english-research-paper",
   "version": "0.0.1",
   "description": "Rewrite research paper into plain English with the power of AI",
-  "options_page": "src/pages/options/index.html",
   "action": {
     "default_popup": "src/pages/popup/index.html",
     "default_icon": "icon-34.png"
@@ -11,6 +10,10 @@
   "icons": {
     "128": "icon-128.png"
   },
+  "permissions": [
+    "storage",
+    "unlimitedStorage"
+  ],
   "content_scripts": [
     {
       "matches": [
