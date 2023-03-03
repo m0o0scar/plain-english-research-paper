@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "plain-english-research-paper",
+  "name": "Plain English Research Paper",
   "version": "0.0.1",
   "description": "Rewrite research paper into plain English with the power of AI",
   "action": {
